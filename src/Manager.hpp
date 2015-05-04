@@ -14,7 +14,9 @@
 
 class Manager {
 private:
-    /* use List<Track> */
+    /* use List<Track> 
+     * List<Track>
+     */
     Track *tracksWE[WE_TRACKS];
     Track *tracksEW[EW_TRACKS];
     Track *tracksNS[NS_TRACKS];

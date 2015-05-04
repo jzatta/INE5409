@@ -11,6 +11,11 @@ public:
         tail = NULL;
     }
     
+    virtual ~Queue<T> {
+        while (!empty())
+            delete remove();
+    }
+    
     void add(T *data) {
         Element<T> *tmpPtr;
         tmpPtr = new Element<T>(NULL, data);
@@ -23,7 +28,7 @@ public:
         tail = tmpPtr;
     }
     
-    T *getNext() {
+    T *get() {
         if (empty())
             throw -1;
         return head->getInfo();
@@ -31,7 +36,7 @@ public:
     
     T *remove() {
         Element<T> *delPtr;
-        T *data = getNext();
+        T *data = get();
         if (empty())
             throw -1;
         delPtr = head;

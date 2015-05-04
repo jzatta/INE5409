@@ -12,10 +12,10 @@ public:
     
     void createCar(Event *evt) {
         Vehicle *car;
-        Event* newEvt = new Event(this, evt->getTime() + timeGenerate)
+        Event* newEvt = new Event(this, evt->getTime() + timeGenerate);
         Manager::getEvents()->add(newEvt);
         car = new Vehicle(Vehicle::randomSize());
-        if (incoming(car))
+        if (Track::incoming(car))
             return;
         delete car;
     }
