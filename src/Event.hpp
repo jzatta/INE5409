@@ -7,7 +7,7 @@ private:
     Eventable *evt;
     void (*callBack)(Event*);
 public:
-    Event(Eventable *_evt, void (*_callBack)(void)  int _time) {
+    Event(Eventable *_evt, void (*_callBack)(int)  int _time) {
         evt = _evt;
         callBack = _callBack;
         time = _time;
@@ -22,7 +22,7 @@ public:
     }
     
     void handleEvent() {
-        evt->callBack(this);
+        evt->callBack(time);
         delete this;
     }
     
@@ -43,4 +43,4 @@ public:
             return true;
         return false;
     }
-}
+};

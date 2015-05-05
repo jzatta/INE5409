@@ -48,4 +48,4 @@ public:
     bool empty() {
         return head == NULL;
     }
-}
+};

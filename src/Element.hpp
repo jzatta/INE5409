@@ -37,4 +37,4 @@ public:
     T *getInfo(){
         return _info;
     }
-}
+};

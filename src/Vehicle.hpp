@@ -26,4 +26,4 @@ public:
     void setupDir(int dir) {
         direction = dir;
     }
-}
+};
