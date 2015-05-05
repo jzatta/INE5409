@@ -170,4 +170,4 @@ public:
     static void addDestroyedCars() {
         destroyedCars++;
     }
-}
+};

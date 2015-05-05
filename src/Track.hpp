@@ -114,4 +114,4 @@ public:
     void semaphoreUnblock();
     void semaphoreBlock();
     bool semaphoreBlocked();
-}
+};

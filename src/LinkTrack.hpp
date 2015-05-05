@@ -31,4 +31,4 @@ public:
     bool semaphoreBlocked() {
         return semaphoreRed;
     }
-}
+};

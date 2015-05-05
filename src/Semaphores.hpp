@@ -38,4 +38,4 @@ public:
         for (int j = 0; !tracksToNotify[openedDirection]->empty(); j++)
             tracksToNotify[openedDirection]->get(j)->semaphoreUnblock(evtTime);
     }
-}
+};
