@@ -27,6 +27,8 @@ public:
     }
     
     void waitingSemaphore() {
+        if (carWaitingSemaphore)
+            trafficJam++;
         carWaitingSemaphore = true;
     }
     void semaphoreUnblock(int evtTime) {

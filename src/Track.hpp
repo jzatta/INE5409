@@ -10,6 +10,7 @@ protected:
     List<Track> *targetTracks;
     List<int> *targetProbability;
     bool trackBlocked;
+    int trafficJam;
     int totalLenght, usedLenght, velocity; // All saved in SI
     List<Track> *waitingTracks;
 public:
@@ -18,19 +19,14 @@ public:
         this->velocity = (int)((double)velocity / 3.6);
         this->usedLenght = 0;
         trackBlocked = false;
+        trafficJam = 0;
         cars = new Queue<Vehicle>();
         targetTracks = new List<Track>();
         targetProbability = new List<int>();
         waitingTracks = new List<Track>();
     }
     
-    void addTargetTracks(Track *track, int prob) {
-        targetTracks->add(track,0);
-        targetProbability->add(new int(prob),0);
-        /* Gambiarra pra nao precisar mudar as listas */
-    }
-    
-    virtual ~Track(){
+    virtual ~Track() {
         while (!cars->empty())
             delete cars->remove();
         while (!targetProbability->empty())
@@ -39,6 +35,13 @@ public:
         delete targetTracks;
         delete targetProbability;
         delete waitingTracks;
+    }
+    
+    void addTargetTracks(Track *track, int prob) {
+        targetTracks->add(track,0);
+        /* Ignorar */
+        targetProbability->add(new int(prob),0);
+        /* Gambiarra pra nao precisar mudar as listas */
     }
 
     bool Event *incoming(Vehicle *car) {
@@ -54,11 +57,14 @@ public:
     }
 
     virtual void outgoing(int evtTime) {
-        if (trackBlocked)
+        if (trackBlocked){
+            trafficJam++;
             return;
+        }
         // threat semaphore if open continue, else block track and add to semaphore notify
         if (semaphoreBlocked()) {
             waitingSemaphore();
+            return;
         }
         Vehicle *car = cars->get();
         int destination = car->getDirection();
@@ -78,8 +84,10 @@ public:
         if (test) {
             cars->remove();
             usedLenght -= car->getLenght();
-            int timeToGetOut = car->getLenght() / velocity;
-            generateEvent(evtTime + timeToGetOut);
+            if (trafficJam--) {
+                int timeToGetOut = car->getLenght() / velocity;
+                generateEvent(evtTime + timeToGetOut);
+            }
             while (!waitingTracks->empty())
                 waitingTracks->remove()->notify(evtTime);
             return;

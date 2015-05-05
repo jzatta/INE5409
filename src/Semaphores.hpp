@@ -4,6 +4,8 @@
 #include "List.hpp"
 #include "Event.hpp"
 
+enum Directions {DIRWE, DIRNS, DIREW, DIRSN};
+
 class Semaphores: public Eventable {
 private:
     List<Track> *tracksToNotify[4];
@@ -15,7 +17,7 @@ public:
         for (i = 0; i < 4; i++)
             tracksToSem[i] = new List<Track>();
         openedDirection = -1;
-        execute(0);
+        execute(0-time);
     }
     
     ~Semaphores() {
