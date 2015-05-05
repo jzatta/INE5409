@@ -1,3 +1,5 @@
+#ifndef EVENT_HPP
+#define EVENT_HPP
 
 #include "Eventable.hpp"
 
@@ -5,9 +7,9 @@ class Event {
 private:
     int time;
     Eventable *evt;
-    void (*callBack)(Event*);
+    void (*callBack)(int);
 public:
-    Event(Eventable *_evt, void (*_callBack)(int)  int _time) {
+    Event(Eventable *_evt, void (*_callBack)(int), int _time) {
         evt = _evt;
         callBack = _callBack;
         time = _time;
@@ -22,7 +24,7 @@ public:
     }
     
     void handleEvent() {
-        evt->callBack(time);
+        callBack(time);
         delete this;
     }
     
@@ -44,3 +46,4 @@ public:
         return false;
     }
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef LINKTRACK_HPP
+#define LINKTRACK_HPP
 
 #include "Track.hpp"
 
@@ -32,3 +34,4 @@ public:
         return semaphoreRed;
     }
 };
+#endif

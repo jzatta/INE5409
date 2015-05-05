@@ -1,3 +1,5 @@
+#ifndef QUEUE_HPP
+#define QUEUE_HPP
 
 #include "Element.hpp"
 
@@ -6,12 +8,12 @@ class Queue<T> {
 private:
     Element<T> *head, *tail;
 public:
-    Queue<T>() {
+    Queue() {
         head = NULL;
         tail = NULL;
     }
     
-    virtual ~Queue<T> {}
+    virtual ~Queue() {}
     
     void add(T *data) {
         Element<T> *tmpPtr;
@@ -46,3 +48,4 @@ public:
         return head == NULL;
     }
 };
+#endif

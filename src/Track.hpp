@@ -1,3 +1,5 @@
+#ifndef TRACK_HPP
+#define TRACK_HPP
 
 #include <cstdlib>
 #include "Eventable.hpp"
@@ -109,7 +111,7 @@ public:
     }
     
     void *generateEvent(int time) {
-        Event* evt = new Event(this, outgoing,  time);
+        Event* evt = new Event(this, &outgoing,  time);
         Manager::getEvents()->add(evt);
     }
     
@@ -118,3 +120,4 @@ public:
     void semaphoreBlock();
     bool semaphoreBlocked();
 };
+#endif

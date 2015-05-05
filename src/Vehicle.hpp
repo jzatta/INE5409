@@ -1,3 +1,5 @@
+#ifndef VEHICLE_HPP
+#define VEHICLE_HPP
 
 #include <cstdlib>
 #include "Manager.hpp"
@@ -18,7 +20,7 @@ public:
     }
     
     static int ramdomSize() {
-        return (std::rand() % 7) + 1;
+        return (std::rand() % 9) + 2;
     }
     
     int getLenght() {
@@ -33,3 +35,4 @@ public:
         direction = dir;
     }
 };
+#endif

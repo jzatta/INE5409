@@ -1,3 +1,5 @@
+#ifndef SEMAPHORE_HPP
+#define SEMAPHORE_HPP
 
 #include "Eventable.hpp"
 #include "Event.hpp"
@@ -34,9 +36,10 @@ public:
         for (int j = 0; !tracksToNotify[openedDirection]->empty(); j++)
             tracksToNotify[openedDirection]->get(j)->semaphoreBlock(evtTime);
         openedDirection = ++openedDirection % 4;
-        Event* evt = new Event(this, execute,  evtTime + timeChange);
+        Event* evt = new Event(this, &execute,  evtTime + timeChange);
         Manager::getEvents()->add(evt);
         for (int j = 0; !tracksToNotify[openedDirection]->empty(); j++)
             tracksToNotify[openedDirection]->get(j)->semaphoreUnblock(evtTime);
     }
 };
+#endif

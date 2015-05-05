@@ -1,8 +1,10 @@
+#ifndef LIST_HPP
+#define LIST_HPP
 
 #include "Element.hpp"
 
 template<typename T>
-class List<T> {
+class List {
 protected:
     Element<T> *head;
     
@@ -20,7 +22,7 @@ protected:
     }
     
 public:
-    List<T>() {
+    List() {
         head = NULL;
     }
     
@@ -88,3 +90,4 @@ public:
         return head == NULL;
     }
 };
+#endif

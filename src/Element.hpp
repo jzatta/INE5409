@@ -1,18 +1,21 @@
+#ifndef ELEMENT_HPP
+#define ELEMENT_HPP
 
+#include <cstdlib>
 
 template<typename T>
-class Element<T> {
+class Element {
 private:
     Element<T> *_next, *_prev;
     T *_info;
 public:
-    Element<T>(Element<T> *next, T *info) {
+    Element(Element<T> *next, T *info) {
         _next = next;
         _prev = NULL;
         _info = info;
     }
     
-    Element<T>(Element<T> *next, Element<T> *prev, T *info) {
+    Element(Element<T> *next, Element<T> *prev, T *info) {
         _next = next;
         _prev = prev;
         _info = info;
@@ -38,3 +41,4 @@ public:
         return _info;
     }
 };
+#endif

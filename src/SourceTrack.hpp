@@ -1,3 +1,5 @@
+#ifndef SOURCETRACK_HPP
+#define SOURCETRACK_HPP
 
 #include <cstdlib>
 #include "Event.hpp"
@@ -23,7 +25,7 @@ public:
     void createCar(int evtTime) {
         Vehicle *car;
         int timeToAdd = (std::rand() % (var * 2)) + timeGenerate - var;
-        Event* newEvt = new Event(this, createCar, evtTime + timeToAdd);
+        Event* newEvt = new Event(this, &createCar, evtTime + timeToAdd);
         Manager::getEvents()->add(newEvt);
         car = new Vehicle(Vehicle::randomSize());
         if (Track::incoming(car))
@@ -51,3 +53,4 @@ public:
         return semaphoreRed;
     }
 };
+#endif

@@ -1,13 +1,14 @@
+#ifndef SORTEDLIST_HPP
+#define SORTEDLIST_HPP
 
 #include "Element.hpp"
 #include "List.hpp"
 
 template<typename T>
-class SortedList<T>: public List<T> {
+class SortedList: public List<T> {
 private:
     
 public:
-    
     virtual ~SortedList() {}
     
     void add(T *data) {
@@ -27,3 +28,4 @@ public:
         posPtr->setNext(tmpPtr);
     }
 };
+#endif

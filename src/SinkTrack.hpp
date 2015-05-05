@@ -1,3 +1,5 @@
+#ifndef SINKTRACK_HPP
+#define SINKTRACK_HPP
 
 #include "Track.hpp"
 #include "Vehicle.hpp"
@@ -30,3 +32,4 @@ public:
         return;
     }
 };
+#endif

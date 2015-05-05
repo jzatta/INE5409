@@ -1,3 +1,5 @@
+#ifndef MANAGER_HPP
+#define MANAGER_HPP
 
 #include <cstdlib>
 #include "Eventable.hpp"
@@ -26,10 +28,11 @@
 #define NS_TRACKS 4
 #define SN_TRACKS 4
 
+
 class Manager {
 private:
     List<Track> *tracks;
-    int simulationTime, semaphoreOpenedTime;
+    int simulationTime;
     static SortedList<Event> *events;
     static Semaphores *semaphores;
     static int createdCars, destroyedCars;
@@ -50,21 +53,18 @@ private:
         SinkSN2
     };
 public:
-    int main(int argc, char *argv) {
-        // manipulate args
-        // seed (random)
-        // other 'off simulation' initializations
-        return manage();
+    Manager(int semaphoreOpenedTime, int _simulationTime) {
+        createdCars = destroyedCars = 0;
+        simulationTime = _simulationTime;
+        tracks = new List<Track>();
+        events = new SortedList<Event>();
+        semaphores = new Semaphores(semaphoreOpenedTime);
     }
     
     int manage(){
         int i;
         Event *runningEvt;
         Track *trackPointer;
-        createdCars = destroyedCars = 0;
-        tracks = new List<Track>();
-        events = new SortedList<Event>();
-        semaphores = new Semaphores(semaphoreOpenedTime);
         // creation of tracks
             // SourceTrack
                 // WE
@@ -180,3 +180,12 @@ public:
         destroyedCars++;
     }
 };
+
+int main(int argc, char **argv) {
+    // manipulate args
+    std::srand(new int[0]);
+    // other 'off simulation' initializations
+    return new Manager()->manage();
+}
+
+#endif
