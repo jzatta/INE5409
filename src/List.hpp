@@ -31,7 +31,7 @@ public:
     virtual void add(T *data, int pos) {
         Element<T> *prevPosPtr, *tmpPtr;
         if (pos == 0) {
-            addBegin(dado);
+            addBegin(data);
             return;
         }
         prevPosPtr = memPos(pos - 1);

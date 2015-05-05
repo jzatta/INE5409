@@ -22,10 +22,14 @@ public:
     
     virtual ~SourceTrack() {}
     
+    static void createCar(Eventable *target, int evtTime) {
+        ((SourceTrack*)target)->createCar(evtTime);
+    }
+    
     void createCar(int evtTime) {
         Vehicle *car;
         int timeToAdd = (std::rand() % (var * 2)) + timeGenerate - var;
-        Event* newEvt = new Event(this, &createCar, evtTime + timeToAdd);
+        Event* newEvt = new Event(this, &SourceTrack::createCar, evtTime + timeToAdd);
         Manager::getEvents()->add(newEvt);
         car = new Vehicle(Vehicle::randomSize());
         if (Track::incoming(car))

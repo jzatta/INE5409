@@ -60,6 +60,10 @@ public:
         }
         return false;
     }
+    
+    static void outgoing(Eventable *target, int evtTime) {
+        ((Track*)target)->outgoing(evtTime);
+    }
 
     virtual void outgoing(int evtTime) {
         if (trackBlocked){

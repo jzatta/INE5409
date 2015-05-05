@@ -32,6 +32,10 @@ public:
         tracksToNotify[direction]->add(t,0);
     }
     
+    static void execute(Eventable *target, int evtTime) {
+        ((Semaphores*)target)->execute(evtTime);
+    }
+    
     void execute(int evtTime) {
         for (int j = 0; !tracksToNotify[openedDirection]->empty(); j++)
             tracksToNotify[openedDirection]->get(j)->semaphoreBlock(evtTime);

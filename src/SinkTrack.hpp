@@ -23,8 +23,6 @@ public:
     
     virtual void outgoing(int evtTime) {
         Vehicle *car = cars->get();
-        
-        
         usedLenght -= car->getLenght();
         while (!waitingTracks->empty())
             waitingTracks->remove()->notify(evtTime);

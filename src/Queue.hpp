@@ -4,7 +4,7 @@
 #include "Element.hpp"
 
 template<typename T>
-class Queue<T> {
+class Queue {
 private:
     Element<T> *head, *tail;
 public:
