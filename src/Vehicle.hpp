@@ -1,5 +1,6 @@
 
 #include <cstdlib>
+#include "Manager.hpp"
 
 class Vehicle {
 private:

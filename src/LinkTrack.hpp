@@ -10,7 +10,7 @@ public:
         carWaitingSemaphore = false;
     }
     
-    virtual ~SourceTrack() {}
+    virtual ~LinkTrack() {}
     
     void waitingSemaphore() {
         carWaitingSemaphore = true;

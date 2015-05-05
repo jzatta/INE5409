@@ -1,4 +1,6 @@
 
+#include "Element.hpp"
+
 template<typename T>
 class List<T> {
 protected:

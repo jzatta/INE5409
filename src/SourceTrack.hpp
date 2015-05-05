@@ -1,4 +1,9 @@
 
+#include <cstdlib>
+#include "Event.hpp"
+#include "Manager.hpp"
+#include "Track.hpp"
+#include "Vehicle.hpp"
 
 class SourceTrack: public Track {
 private:

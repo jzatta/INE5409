@@ -1,12 +1,13 @@
 
 #include "Track.hpp"
+#include "Vehicle.hpp"
 
 class SinkTrack: public Track {
 private:
 public:
-    LinkTrack(int lenght, int velocity): Track(int lenght, int velocity) {}
+    SinkTrack(int lenght, int velocity): Track(int lenght, int velocity) {}
     
-    virtual ~SourceTrack() {}
+    virtual ~SinkTrack() {}
     
     void waitingSemaphore() {}
     
