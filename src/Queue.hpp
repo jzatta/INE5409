@@ -11,10 +11,7 @@ public:
         tail = NULL;
     }
     
-    virtual ~Queue<T> {
-        while (!empty())
-            delete remove();
-    }
+    virtual ~Queue<T> {}
     
     void add(T *data) {
         Element<T> *tmpPtr;

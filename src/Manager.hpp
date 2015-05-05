@@ -21,9 +21,10 @@ private:
     Track *tracksEW[EW_TRACKS];
     Track *tracksNS[NS_TRACKS];
     Track *tracksSN[SN_TRACKS];
-    int semOpened, simulationTime;
-    bool elapsedTime;
+    int simulationTime, semaphoreOpenedTime;
     static SortedList<Event> *events;
+    static Semaphores *semaphores;
+    static int createdCars, destroyedCars;
 public:
     int main(int argc, char *argv) {
         // manipulate args
@@ -32,25 +33,41 @@ public:
         return manage();
     }
     
-    int manage(int simTime){
+    int manage(){
         int i;
         Event *runningEvt;
+        createdCars = destroyedCars = 0;
         events = new SortedList<Event>();
-        semOpened = -1;
-        elapsedTime = false;
+        semaphores = new Semaphores(semaphoreOpenedTime);
         while (true) {
+            if (events->empty())
+                return -1;
+            runningEvt = events->remove(0);
             if (runningEvt->getTime > simulationTime) {
                 break;
             }
-            if (events->empty())
-                return -1;
+            runningEvt->handleEvent(); // Event suicide here runningEvt == NULL
         }
+        
         // print simulation status
         delete events;
+        delete semaphores;
         return 0;
     }
     
     static SortedList<Event> *getEvents() {
         return events;
+    }
+    
+    static Semaphores *getSemaphores() {
+        return semaphores;
+    }
+    
+    static void addCreatedCar() {
+        createdCars++;
+    }
+    
+    static void addDestroyedCars() {
+        destroyedCars++;
     }
 }

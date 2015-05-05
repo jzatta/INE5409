@@ -22,10 +22,7 @@ public:
         head = NULL;
     }
     
-    virtual ~List() {
-        while (!empty())
-            delete remove();
-    }
+    virtual ~List() {}
     
     virtual void add(T *data, int pos) {
         Element<T> *prevPosPtr, *tmpPtr;

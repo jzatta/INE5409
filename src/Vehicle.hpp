@@ -9,6 +9,11 @@ public:
     Vehicle(int _size) {
         size = _size + 3; // distance from others vehicles
         direction = -1;
+        Manager::addCreatedCar();
+    }
+    
+    ~Vehicle() {
+        Manager::addDestroyedCars();
     }
     
     static int ramdomSize() {
