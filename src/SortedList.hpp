@@ -15,14 +15,15 @@ public:
     
     void add(T *data) {
         Element<T> *tmpPtr, *posPtr;
-        if ( this->head == NULL || (*data < *(this->head->getInfo())) ) {
-            addBegin(data);
+        if ( this->head == NULL || (data < this->head->getInfo()) ) {
+            this->addBegin(data);
             return;
         }
         posPtr = this->head;
         while ( (tmpPtr = posPtr->getNext()) != NULL ) {
-            if ( *data < *(this->head->getInfo()) )
+            if ( data < tmpPtr->getInfo() )
                 break;
+            posPtr = tmpPtr;
         }
         tmpPtr = new Element<T>(tmpPtr, data);
         if (tmpPtr == NULL)

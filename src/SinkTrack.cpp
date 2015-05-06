@@ -1,9 +1,14 @@
 
 #include "SinkTrack.h"
 
-SinkTrack::SinkTrack(int lenght, int velocity): Track(int lenght, int velocity) {}
+#include "List.hpp"
+#include "Queue.hpp"
+#include "Track.h"
+#include "Vehicle.h"
 
-virtual SinkTrack::~SinkTrack() {}
+SinkTrack::SinkTrack(int lenght, int velocity): Track(lenght, velocity) {}
+
+SinkTrack::~SinkTrack() {}
 
 void SinkTrack::waitingSemaphore() {}
 
@@ -15,11 +20,12 @@ bool SinkTrack::semaphoreBlocked() {
     return false;
 }
 
-virtual void SinkTrack::outgoing(int evtTime) {
+void SinkTrack::outgoing(int evtTime) {
     Vehicle *car = cars->get();
     usedLenght -= car->getLenght();
     while (!waitingTracks->empty())
-        waitingTracks->remove()->notify(evtTime);
+        waitingTracks->remove(0)->notify(evtTime);
+    carsOut++;
     delete cars->remove();
     return;
 }

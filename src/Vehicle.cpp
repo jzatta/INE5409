@@ -1,8 +1,8 @@
-#ifndef VEHICLE_HPP
-#define VEHICLE_HPP
+
+#include "Vehicle.h"
 
 #include <cstdlib>
-#include "Vehicle.h"
+#include "Manager.h"
 
 Vehicle::Vehicle(int _size) {
     size = _size + 3; // distance from others vehicles
@@ -14,7 +14,7 @@ Vehicle::~Vehicle() {
     Manager::addDestroyedCars();
 }
 
-static int Vehicle::ramdomSize() {
+int Vehicle::ramdomSize() {
     return (std::rand() % 9) + 2;
 }
 

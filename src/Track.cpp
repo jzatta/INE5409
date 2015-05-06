@@ -1,6 +1,15 @@
 
 #include "Track.h"
 
+#include <cstdlib>
+#include "Eventable.h"
+#include "Event.h"
+#include "List.hpp"
+#include "Manager.h"
+#include "Queue.hpp"
+#include "SortedList.hpp"
+#include "Vehicle.h"
+
 Track::Track(int lenght, int velocity){
     this->totalLenght = lenght;
     this->velocity = (int)((double)velocity / 3.6);
@@ -11,9 +20,10 @@ Track::Track(int lenght, int velocity){
     targetTracks = new List<Track>();
     targetProbability = new List<int>();
     waitingTracks = new List<Track>();
+    carsIn = carsOut = 0;
 }
 
-virtual Track::~Track() {
+Track::~Track() {
     while (!cars->empty())
         delete cars->remove();
     while (!targetProbability->empty())
@@ -33,6 +43,7 @@ void Track::addTargetTracks(Track *track, int prob) {
 
 bool Track::incoming(Vehicle *car) {
     if ((totalLenght - usedLenght) >= car->getLenght()) {
+        carsIn++;
         cars->add(car);
         car->setupDir(-1);
         usedLenght += car->getLenght();
@@ -43,11 +54,12 @@ bool Track::incoming(Vehicle *car) {
     return false;
 }
 
-static void Track::outgoing(Eventable *target, int evtTime) {
+void Track::outgoing(Eventable *target, int evtTime) {
+    println("Track::outgoing");
     ((Track*)target)->outgoing(evtTime);
 }
 
-virtual void Track::outgoing(int evtTime) {
+void Track::outgoing(int evtTime) {
     if (trackBlocked){
         trafficJam++;
         return;
@@ -62,17 +74,18 @@ virtual void Track::outgoing(int evtTime) {
     if (destination == -1) {
         int totalChances = 0, i;
         for (i = 0; !targetProbability->empty(); i++) {
-            totalChances += targetProbability->get(i);
+            totalChances += *(targetProbability->get(i));
         }
         totalChances = std::rand() % totalChances;
         for (i = 0; totalChances >= 0; i++) {
-            totalChances -= targetProbability->get(i);
+            totalChances -= *(targetProbability->get(i));
         }
         destination = i;
         car->setupDir(destination);
     }
     bool test = targetTracks->get(destination)->incoming(car);
     if (test) {
+        carsOut++;
         cars->remove();
         usedLenght -= car->getLenght();
         if (trafficJam--) {
@@ -80,7 +93,7 @@ virtual void Track::outgoing(int evtTime) {
             generateEvent(evtTime + timeToGetOut);
         }
         while (!waitingTracks->empty())
-            waitingTracks->remove()->notify(evtTime);
+            waitingTracks->remove(0)->notify(evtTime);
         return;
     }
     trackBlocked = true;
@@ -97,6 +110,13 @@ void Track::waitingFor(Track *t) {
 }
 
 void *Track::generateEvent(int time) {
-    Event* evt = new Event(this, &outgoing,  time);
+    Event* evt = new Event(this, &Track::outgoing,  time);
     Manager::getEvents()->add(evt);
+}
+
+int Track::getCarsIn() {
+    return carsIn;
+}
+int Track::getCarsOut(){
+    return carsOut;
 }

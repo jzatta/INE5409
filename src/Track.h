@@ -1,23 +1,27 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include <cstdlib>
-#include "Eventable.hpp"
-#include "Event.hpp"
-#include "List.hpp"
-#include "Manager.hpp"
-#include "Queue.hpp"
-#include "Vehicle.hpp"
+#include "Eventable.h"
+
+class Vehicle;
+
+template<typename T>
+class List;
+template<typename T>
+class Queue;
+template<typename T>
+class SortedList;
 
 class Track: public Eventable {
 protected:
     Queue<Vehicle> *cars;
     List<Track> *targetTracks;
     List<int> *targetProbability;
+    List<Track> *waitingTracks;
     bool trackBlocked;
     int trafficJam;
     int totalLenght, usedLenght, velocity; // All saved in SI
-    List<Track> *waitingTracks;
+    int carsIn, carsOut;
 public:
     Track(int lenght, int velocity);
     
@@ -25,7 +29,7 @@ public:
     
     void addTargetTracks(Track *track, int prob);
 
-    bool Event *incoming(Vehicle *car);
+    bool incoming(Vehicle *car);
     
     static void outgoing(Eventable *target, int evtTime);
 
@@ -37,9 +41,12 @@ public:
     
     void *generateEvent(int time);
     
-    void waitingSemaphore();
-    void semaphoreUnblock();
-    void semaphoreBlock();
-    bool semaphoreBlocked();
+    int getCarsIn();
+    int getCarsOut();
+    
+    virtual void waitingSemaphore() = 0;
+    virtual void semaphoreUnblock(int evtTime) = 0;
+    virtual void semaphoreBlock(int evtTime) = 0;
+    virtual bool semaphoreBlocked() = 0;
 };
 #endif

@@ -1,17 +1,19 @@
-#ifndef SEMAPHORE_HPP
-#define SEMAPHORE_HPP
+#ifndef SEMAPHORE_H
+#define SEMAPHORE_H
 
-#include "Eventable.hpp"
-#include "Event.hpp"
-#include "List.hpp"
-#include "Manager.hpp"
-#include "Track.hpp"
+#include "Eventable.h"
+
+class Track;
+
+template<typename T>
+class List;
 
 enum Directions {DIRWE, DIRNS, DIREW, DIRSN};
 
 class Semaphores: public Eventable {
 private:
-    List<Track> *tracksToNotify[4];
+    static List<Track> *tracksToNotify[4];
+    int counterTracks[4];
     int timeChange;
     int openedDirection;
 public:

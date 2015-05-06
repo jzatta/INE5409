@@ -1,13 +1,17 @@
 
 #include "Event.h"
 
+#include "Eventable.h"
+
+#include "debug.h"
+
 Event::Event(Eventable *_evt, void (*_callBack)(Eventable*, int), int _time) {
     evt = _evt;
     callBack = _callBack;
     time = _time;
 }
 
-virtual Event::~Event() {}
+Event::~Event() {}
 
 int Event::getTime() {
     return time;

@@ -3,11 +3,13 @@
 
 #include "Element.hpp"
 
+#include "debug.h"
+
 template<typename T>
 class List {
 protected:
     Element<T> *head;
-    
+    int size;
     Element<T> *memPos(int pos) {
         int i;
         Element<T> *posPtr = head;
@@ -24,6 +26,7 @@ protected:
 public:
     List() {
         head = NULL;
+        size = 0;
     }
     
     virtual ~List() {}
@@ -38,8 +41,13 @@ public:
         tmpPtr = new Element<T>(prevPosPtr->getNext(), data);
         if (tmpPtr == NULL)
             throw -1;
+        size++;
         prevPosPtr->setNext(tmpPtr);
         return;
+    }
+    
+    virtual void add(T *data) {
+        add(data,size);
     }
     
     T *get(int pos) {
@@ -58,6 +66,7 @@ public:
         if (pos == 0) {
             return removeBegin();
         }
+        size--;
         prevPosPtr = memPos(pos - 1);
         delPtr = prevPosPtr->getNext();
         T *retData = delPtr->getInfo();
@@ -72,6 +81,7 @@ public:
         if (tmpPtr == NULL) {
             throw -1;
         }
+        size++;
         head = tmpPtr;
         return;
     }
@@ -80,6 +90,7 @@ public:
         Element<T> *tmpPtr = head;
         if (empty())
             throw -1;
+        size--;
         T *info = head->getInfo();
         head = head->getNext();
         delete tmpPtr;

@@ -23,7 +23,7 @@ public:
         if (empty())
             head = tmpPtr;
         else
-            tail->setnext(tmpPtr);
+            tail->setNext(tmpPtr);
         tail = tmpPtr;
     }
     
@@ -39,7 +39,7 @@ public:
         if (empty())
             throw -1;
         delPtr = head;
-        head = head->getnext();
+        head = head->getNext();
         delete delPtr;
         return data;
     }

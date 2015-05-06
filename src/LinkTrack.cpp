@@ -1,12 +1,14 @@
 
 #include "LinkTrack.h"
 
-LinkTrack::LinkTrack(int lenght, int velocity): Track(int lenght, int velocity) {
+#include "Track.h"
+
+LinkTrack::LinkTrack(int lenght, int velocity): Track(lenght, velocity) {
     semaphoreRed = true;
     carWaitingSemaphore = false;
 }
 
-virtual LinkTrack::~LinkTrack() {}
+LinkTrack::~LinkTrack() {}
 
 void LinkTrack::waitingSemaphore() {
     carWaitingSemaphore = true;

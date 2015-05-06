@@ -1,19 +1,5 @@
-#ifndef MANAGER_HPP
-#define MANAGER_HPP
-
-#include <cstdlib>
-#include "Eventable.hpp"
-#include "Event.hpp"
-#include "LinkTrack.hpp"
-#include "List.hpp"
-#include "Manager.hpp"
-#include "Queue.hpp"
-#include "Semaphores.hpp"
-#include "SinkTrack.hpp"
-#include "SortedList.hpp"
-#include "SourceTrack.hpp"
-#include "Track.hpp"
-#include "Vehicle.hpp"
+#ifndef MANAGER_H
+#define MANAGER_H
 
 
 /*       North
@@ -28,7 +14,32 @@
 #define NS_TRACKS 4
 #define SN_TRACKS 4
 
+class Event;
+class Semaphores;
+class Track;
 
+template<typename T>
+class List;
+template<typename T>
+class SortedList;
+
+enum tracks {
+    SourceWE,
+    SourceEW,
+    SourceNS1,
+    SourceNS2,
+    SourceSN1,
+    SourceSN2,
+    LinkWE,
+    LinkEW,
+    SinkWE,
+    SinkEW,
+    SinkNS1,
+    SinkNS2,
+    SinkSN1,
+    SinkSN2
+};
+    
 class Manager {
 private:
     List<Track> *tracks;
@@ -36,22 +47,6 @@ private:
     static SortedList<Event> *events;
     static Semaphores *semaphores;
     static int createdCars, destroyedCars;
-    enum tracks {
-        SourceWE,
-        SourceEW,
-        SourceNS1,
-        SourceNS2,
-        SourceSN1,
-        SourceSN2,
-        LinkWE,
-        LinkEW,
-        SinkWE,
-        SinkEW,
-        SinkNS1,
-        SinkNS2,
-        SinkSN1,
-        SinkSN2
-    };
 public:
     Manager(int semaphoreOpenedTime, int _simulationTime);
     

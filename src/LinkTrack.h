@@ -1,7 +1,7 @@
 #ifndef LINKTRACK_H
 #define LINKTRACK_H
 
-#include "Track.hpp"
+#include "Track.h"
 
 class LinkTrack: public Track {
 private:

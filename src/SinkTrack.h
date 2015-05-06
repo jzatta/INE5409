@@ -1,13 +1,12 @@
-#ifndef SINKTRACK_HPP
-#define SINKTRACK_HPP
+#ifndef SINKTRACK_H
+#define SINKTRACK_H
 
-#include "Track.hpp"
-#include "Vehicle.hpp"
+#include "Track.h"
 
 class SinkTrack: public Track {
 private:
 public:
-    SinkTrack(int lenght, int velocity): Track(int lenght, int velocity);
+    SinkTrack(int lenght, int velocity);
     
     virtual ~SinkTrack();
     

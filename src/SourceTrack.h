@@ -1,18 +1,14 @@
 #ifndef SOURCETRACK_H
 #define SOURCETRACK_H
 
-#include <cstdlib>
-#include "Event.hpp"
-#include "Manager.hpp"
-#include "Track.hpp"
-#include "Vehicle.hpp"
+#include "Track.h"
 
 class SourceTrack: public Track {
 private:
     int timeGenerate, variation;
     bool semaphoreRed, carWaitingSemaphore;
 public:
-    SourceTrack(int lenght, int velocity, int time, int var): Track(int lenght, int velocity);
+    SourceTrack(int lenght, int velocity, int time, int var);
     
     virtual ~SourceTrack();
     

@@ -1,9 +1,6 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
-#include <cstdlib>
-#include "Manager.hpp"
-
 class Vehicle {
 private:
     int size;
