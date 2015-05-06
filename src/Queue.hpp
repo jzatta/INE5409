@@ -19,7 +19,7 @@ public:
         Element<T> *tmpPtr;
         tmpPtr = new Element<T>(NULL, data);
         if (tmpPtr == NULL)
-            throw -1;
+            throw "Queue::add: is full";
         if (empty())
             head = tmpPtr;
         else
@@ -29,7 +29,7 @@ public:
     
     T *get() {
         if (empty())
-            throw -1;
+            throw "Queue::get: is empty";
         return head->getInfo();
     }
     
@@ -37,7 +37,7 @@ public:
         Element<T> *delPtr;
         T *data = get();
         if (empty())
-            throw -1;
+            throw "Queue::remove: is empty";
         delPtr = head;
         head = head->getNext();
         delete delPtr;

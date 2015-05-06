@@ -15,19 +15,19 @@ public:
     
     void add(T *data) {
         Element<T> *tmpPtr, *posPtr;
-        if ( this->head == NULL || (data < this->head->getInfo()) ) {
+        if ( this->head == NULL || data->operator<(this->head->getInfo()) ) {
             this->addBegin(data);
             return;
         }
         posPtr = this->head;
         while ( (tmpPtr = posPtr->getNext()) != NULL ) {
-            if ( data < tmpPtr->getInfo() )
+            if ( data->operator<(tmpPtr->getInfo()) )
                 break;
             posPtr = tmpPtr;
         }
         tmpPtr = new Element<T>(tmpPtr, data);
         if (tmpPtr == NULL)
-            throw -1;
+            throw "SortedList::add: is full";
         posPtr->setNext(tmpPtr);
     }
 };

@@ -14,11 +14,11 @@ protected:
         int i;
         Element<T> *posPtr = head;
         if (pos < 0)
-            throw -1;
+            throw "List::memPos: pos < 0";
         for (i = 0; i < pos; i++) {
             posPtr = posPtr->getNext();
             if (posPtr == NULL)
-                throw -1;
+                throw "List::memPos: pos < size";
         }
         return posPtr;
     }
@@ -40,7 +40,7 @@ public:
         prevPosPtr = memPos(pos - 1);
         tmpPtr = new Element<T>(prevPosPtr->getNext(), data);
         if (tmpPtr == NULL)
-            throw -1;
+            throw "List::add: is full";
         size++;
         prevPosPtr->setNext(tmpPtr);
         return;
@@ -52,7 +52,7 @@ public:
     
     T *get(int pos) {
         if (empty())
-            throw -1;
+            throw "List::get: is empty";
         if (pos == 0) {
             return head->getInfo();
         }
@@ -62,7 +62,7 @@ public:
     T *remove(int pos) {
         Element<T> *prevPosPtr, *delPtr;
         if (empty())
-            throw -1;
+            throw "List::remove: is empty";
         if (pos == 0) {
             return removeBegin();
         }
@@ -79,7 +79,7 @@ public:
         Element<T> *tmpPtr;
         tmpPtr = new Element<T>(head, data);
         if (tmpPtr == NULL) {
-            throw -1;
+            throw "List::addBegin: is full";
         }
         size++;
         head = tmpPtr;
@@ -89,7 +89,7 @@ public:
     T *removeBegin() {
         Element<T> *tmpPtr = head;
         if (empty())
-            throw -1;
+            throw "List::removeBegin: is empty";
         size--;
         T *info = head->getInfo();
         head = head->getNext();
@@ -99,6 +99,10 @@ public:
     
     bool empty() {
         return head == NULL;
+    }
+    
+    int sizeOf() {
+        return size;
     }
 };
 #endif
