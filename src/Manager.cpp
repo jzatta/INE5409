@@ -157,9 +157,10 @@ int Manager::manage(){
     for (int i = 0; !tracks->empty(); i++){
         Track *rdT;
         rdT = tracks->remove(0);
-        std::cout << i << "Pista " << tracksNames[i] << 
+        std::cout << "Pista " << tracksNames[i] << 
         "; Entraram " << rdT->getCarsIn() << 
-        " carros e sairam " << rdT->getCarsOut() << "carros\n";
+        " carros e sairam " << rdT->getCarsOut() << " carros" << std::endl;
+        std::cout << "\\____Restaram " << rdT->getCarsIn() - rdT->getCarsOut() << " carros" << std::endl;
         delete rdT;
     }
     while (!tracks->empty())
