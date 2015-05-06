@@ -55,40 +55,50 @@ bool Track::incoming(Vehicle *car) {
 }
 
 void Track::outgoing(Eventable *target, int evtTime) {
-    println("Track::outgoing");
+    println("Track:s:outgoing");
     ((Track*)target)->outgoing(evtTime);
 }
 
 void Track::outgoing(int evtTime) {
+    println("Track::outgoing");
     if (trackBlocked){
         trafficJam++;
         return;
     }
     // threat semaphore if open continue, else block track and add to semaphore notify
     if (semaphoreBlocked()) {
+    println("Track::outgoing::blockedSem");
         waitingSemaphore();
         return;
     }
+    //if (cars->empty())
+    //    return;
     Vehicle *car = cars->get();
     int destination = car->getDirection();
     if (destination == -1) {
         int totalChances = 0, i;
-        for (i = 0; !targetProbability->empty(); i++) {
+        for (i = 0; i < targetProbability->sizeOf(); i++) {
             totalChances += *(targetProbability->get(i));
         }
         totalChances = std::rand() % totalChances;
         for (i = 0; totalChances >= 0; i++) {
             totalChances -= *(targetProbability->get(i));
+            if (totalChances < 0)
+                break;
         }
         destination = i;
         car->setupDir(destination);
+        println("Track::outgoing::dirCalculated");
     }
+    println("Track::outgoing::dirCalculated" << destination);
     bool test = targetTracks->get(destination)->incoming(car);
+    println("Track::outgoing::tryIncoming" << test);
     if (test) {
         carsOut++;
         cars->remove();
         usedLenght -= car->getLenght();
-        if (trafficJam--) {
+        if (trafficJam) {
+            trafficJam--;
             int timeToGetOut = car->getLenght() / velocity;
             generateEvent(evtTime + timeToGetOut);
         }
@@ -101,6 +111,7 @@ void Track::outgoing(int evtTime) {
 }
 
 void Track::notify(int evtTime) {
+    println("Track::notify");
     trackBlocked = false;
     outgoing(evtTime);
 }

@@ -24,20 +24,20 @@ template<typename T>
 class SortedList;
 
 enum tracks {
-    SourceWE,
-    SourceEW,
-    SourceNS1,
-    SourceNS2,
-    SourceSN1,
-    SourceSN2,
-    LinkWE,
-    LinkEW,
-    SinkWE,
-    SinkEW,
-    SinkNS1,
-    SinkNS2,
-    SinkSN1,
-    SinkSN2
+    SourceWE = 0,
+    SourceEW = 1,
+    SourceNS1 = 2,
+    SourceNS2 = 3,
+    SourceSN1 = 4,
+    SourceSN2 = 5,
+    LinkWE = 6,
+    LinkEW = 7,
+    SinkWE = 8,
+    SinkEW = 9,
+    SinkNS1 = 10,
+    SinkNS2 = 11,
+    SinkSN1 = 12,
+    SinkSN2 = 13
 };
     
 class Manager {

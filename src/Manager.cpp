@@ -186,6 +186,7 @@ void Manager::addDestroyedCars() {
 }
 
 int main(int argc, char **argv) {
+    int ret = -6;
     if (argc != 3) {
         std::cout << "Insira os argumentos" << std::endl;
         return -2;
@@ -201,7 +202,11 @@ int main(int argc, char **argv) {
     if (man == NULL)
         std::cout << "Erro ao alocar gerenciador" << std::endl;
     println("Call Manager");
-    int ret = man->manage();
+    try {
+        ret = man->manage();
+    } catch (char const *exception) {
+        println("Exception: " <<exception);
+    }
     println("Done");
     delete man;
     return ret;

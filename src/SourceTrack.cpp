@@ -21,11 +21,11 @@ SourceTrack::SourceTrack(int lenght, int velocity, int time, int var): Track(len
 SourceTrack::~SourceTrack() {}
 
 void SourceTrack::createCar(Eventable *target, int evtTime) {
-    println("SourceTrack:s:createCar()" << evtTime);
     ((SourceTrack*)target)->createCar(evtTime);
 }
 
 void SourceTrack::createCar(int evtTime) {
+    println("SourceTrack::createCar()" << evtTime);
     Vehicle *car;
     int timeToAdd = (std::rand() % (variation * 2)) + timeGenerate - variation;
     Event* newEvt = new Event(this, &SourceTrack::createCar, evtTime + timeToAdd);
@@ -47,6 +47,7 @@ void SourceTrack::semaphoreUnblock(int evtTime) {
     semaphoreRed = false;
     if (carWaitingSemaphore){
         carWaitingSemaphore = false;
+        println("LinkTrack::semaphoreUnblock");
         this->outgoing(evtTime);
     }
 }

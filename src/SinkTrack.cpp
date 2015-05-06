@@ -21,6 +21,7 @@ bool SinkTrack::semaphoreBlocked() {
 }
 
 void SinkTrack::outgoing(int evtTime) {
+    println("SinkTrack::outgoing");
     Vehicle *car = cars->get();
     usedLenght -= car->getLenght();
     while (!waitingTracks->empty())
