@@ -1,11 +1,6 @@
 #ifndef PRIMARYKEY_H
 #define PRIMARYKEY_H
 
-struct PrimaryKeyNode {
-    char *name;
-    int pos;
-}
-
 struct Manpage{
     char name[50];
     char content[139715];
@@ -15,7 +10,7 @@ class InvertedIndex;
 
 class PrimaryKey {
 private:
-    Tree<struct PrimaryKeyNode> *root;
+    Tree<char*> *root;
     FILE *manpages;
     InvertedIndex *invertedIndex;
     

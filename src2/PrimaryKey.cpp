@@ -18,7 +18,7 @@ PrimaryKey::PrimaryKey(InvertedIndex *_invertedIndex) {
 
 void PrimaryKey::add(char *manName) {
     if (root == NULL) {
-        root = new TreeAVL(manName);
+        root = new TreeAVL<char*>(manName);
         return;
     }
     root->insert(manName);
