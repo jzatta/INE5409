@@ -20,12 +20,13 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     int wordsCount = 0, i, j;
     char ch;
     char wordsFouded[3000][50];
-    bool notInArchive[3000];
+    bool notIndexed[3000];
     struct InvertedIndexData *occ;
     ptr = page->content;
     ch = *ptr++;
     // read content of manpage
     printlndbg("II: " << page->name << "@" << id);
+    printlndbg("II: " << page->content);
     for (i = 0; ch; ch = *ptr++) {
         if (ch >= 'A' && ch <= 'Z') {
             ch += 'a' - 'A';
@@ -61,7 +62,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     printlndbg("II:::: " << page->name << "@" << wordsCount);
     // initialize a buffer to write word wasnt in file
     for (i = 0; i < wordsCount; i++) {
-        notInArchive[i] = true;
+        notIndexed[i] = true;
     }
     invertedIndex = fopen("index.dat","r+");
     if (invertedIndex == NULL) {
@@ -77,7 +78,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
         }
         for (i = 0; i < wordsCount; i++) {
             if (!strcmp(occ->word, wordsFouded[i])) {
-                notInArchive[i] = false;
+                notIndexed[i] = false;
                 printlndbg("II update: " << occ->word << " : " << occ->occurrencesCount);
                 occ->occurrences[occ->occurrencesCount] = id;
                 occ->occurrencesCount += 1;
@@ -93,7 +94,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     }
     // if not, add first occurrence
     for (i = 0; i < wordsCount; i++) {
-        if (notInArchive[i]) {
+        if (notIndexed[i]) {
             strcpy(occ->word, wordsFouded[i]);
             occ->occurrences[0] = id;
             occ->occurrencesCount = 1;

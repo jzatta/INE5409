@@ -3,7 +3,7 @@
 
 struct InvertedIndexData {
     char word[50];
-    int occurrences[300]; //[5642];
+    int occurrences[5642];
     int occurrencesCount;
 };
 

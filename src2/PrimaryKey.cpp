@@ -65,6 +65,7 @@ void PrimaryKey::save() {
                 throw "Error opening a manpage";
             }
             fread(man->content, 1, manSize, manFile);
+            man->content[manSize - 1] = '\0';
             invertedIndex->add(man, key->pos);
             fwrite(man, sizeof(struct Manpage), 1, manPages);
             fwrite(key, sizeof(struct PrimaryKeyData), 1, primaryKey);

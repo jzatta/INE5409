@@ -40,9 +40,9 @@ int Manager::manage() {
             InvertedIndexData *occ = invertedIndex->search(&input[5]);
             int i;
             if (occ != NULL) {
-                printlndbg("manage: " << occ->occurrencesCount);
+//                 printlndbg("manage: " << occ->occurrencesCount);
                 for (i = 0; i < occ->occurrencesCount; i++) {
-                    std::cout << primaryKey->readById(occ->occurrences[occ->occurrencesCount])->name << std::endl;
+                    std::cout << primaryKey->readById(occ->occurrences[i])->name << std::endl;
                 }
             } else {
                 std::cout << "Manpages not founded" << std::endl;
