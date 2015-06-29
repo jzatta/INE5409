@@ -2,26 +2,22 @@
 #include <stdio.h>
 #include <iostream>
 #include "InvertedIndex.h"
+#include "debug.h"
 
-struct InvertedIndexData {
-    char word[50];
-    char dataCount;
-    int dataLocal[50];
-    char hasMore;
-};
-
-char wordsSeparators[] = "!@#$%*()-, .;:?/\\|";s
-char wordsProhibited[][] = {""};
+char wordsSeparators[] = "!@#$%*()-, .;:?/\\|";
+char wordsProhibited[][50] = {""};
 
 InvertedIndex::InvertedIndex() {
-    invertedIndex = fopen("index.dat","rw");
-    if (invertedIndex == NULL) {
-        throw "Error opening InvertedIndex file";
-    }
+    printlndbg("Building Inverted");
+    invertedIndex = NULL;
 }
 
 void InvertedIndex::add(struct Manpage *page, int id) {
-    
+    invertedIndex = fopen("index.dat","w");
+    if (invertedIndex == NULL) {
+        throw "Error opening InvertedIndex file";
+    }
+    fclose(invertedIndex);
 }
 
 int *InvertedIndex::seach(char *word) {

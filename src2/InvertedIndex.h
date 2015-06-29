@@ -1,5 +1,3 @@
-FILE *manpages, *, *invertexIndex
-
 #ifndef INVERTEDINDEX_H
 #define INVERTEDINDEX_H
 

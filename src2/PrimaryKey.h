@@ -6,15 +6,22 @@ struct Manpage{
     char content[139715];
 };
 
+struct PrimaryKeydata {
+    char name[50];
+    int pos;
+};
+
+template<typename T>
+class NoAVL;
 class InvertedIndex;
 
 class PrimaryKey {
 private:
-    Tree<char*> *root;
-    FILE *manpages;
+    NoAVL<char *> *root;
+    FILE *manPages;
     InvertedIndex *invertedIndex;
     
-    getFileSize(char *path);
+    int getFileSize(char *path);
 public:
     PrimaryKey(InvertedIndex *invertedIndex);
     
@@ -22,8 +29,8 @@ public:
     
     void save(void);
     
-    struct Manpage *read(int id);
-    struct Manpage *read(char *name);
+    struct Manpage *readById(int id);
+    struct Manpage *readByName(const char *name);
 };
 
 #endif
