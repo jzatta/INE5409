@@ -1,11 +1,10 @@
-#ifndef INVERTEDINDEX_H
+﻿#ifndef INVERTEDINDEX_H
 #define INVERTEDINDEX_H
 
 struct InvertedIndexData {
     char word[50];
-    char dataCount;
-    int dataLocal[50];
-    char hasMore;
+    int occurrences[300]; //[5642];
+    int occurrencesCount;
 };
 
 class InvertedIndex {
@@ -13,13 +12,13 @@ private:
     FILE *invertedIndex;
     
     bool isProhibited(char *word);
-    char *getNext(char *);
+    bool isSeparator(char c);
 public:
     InvertedIndex();
     
     void add(struct Manpage *page, int id);
     
-    int *seach(char *word);
+    InvertedIndexData *search(char *word);
 };
 
 #endif

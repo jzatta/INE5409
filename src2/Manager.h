@@ -11,6 +11,7 @@ private:
     PrimaryKey *primaryKey;
     InvertedIndex *invertedIndex;
     
+    void sortInput(char **input);
     int getFileSize(char *path);
 public:
     Manager(int _noFiles, char **_indexFiles);

@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <malloc.h>
 #include <stdio.h>
 #include <string.h>
 #include "Manager.h"
@@ -17,20 +18,39 @@ Manager::Manager(int _noFiles, char **_indexFiles) {
 }
 
 int Manager::manage() {
-    char input[50];
+    char input[128];
     buildStructure();
-    std::cout << "Comandos:" << std::endl;
     while (true) {
+        std::cout << "\n\n\n\n\nComands:\ncommand:'command'\nword:'wordsearch'\n2word:'firstword','secondword'\nexit\n" << std::endl;
         scanf("%s", input);
-        if (!strcmp(input, "exit")) {
+        if (!strncmp(input, "exit", 4)) {
             break;
         }
-        // implementar tratamentos dos comandos
-        struct Manpage *a = primaryKey->readByName("acos.3m");
-        if (a == NULL) {
-            printlndbg("404");
+        else if (!strncmp(input, "command:", 8)) {
+            struct Manpage *man = primaryKey->readByName(&input[8]);
+            if (man != NULL) {
+                std::cout << man->name << std::endl;
+                std::cout << man->content << std::endl;
+                free(man);
+            } else {
+                std::cout << "Manpage not founded" << std::endl;
+            }
         }
-        printlndbg(a->name << ":" << a->content);
+        else if (!strncmp(input, "word:", 5)) {
+            InvertedIndexData *occ = invertedIndex->search(&input[5]);
+            int i;
+            if (occ != NULL) {
+                printlndbg("manage: " << occ->occurrencesCount);
+                for (i = 0; i < occ->occurrencesCount; i++) {
+                    std::cout << primaryKey->readById(occ->occurrences[occ->occurrencesCount])->name << std::endl;
+                }
+            } else {
+                std::cout << "Manpages not founded" << std::endl;
+            }
+        }
+        else if (!strncmp(input, "2word:", 6)) {
+            
+        }
     }
 }
     

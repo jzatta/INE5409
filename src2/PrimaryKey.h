@@ -6,7 +6,7 @@ struct Manpage{
     char content[139715];
 };
 
-struct PrimaryKeydata {
+struct PrimaryKeyData {
     char name[50];
     int pos;
 };
@@ -18,7 +18,7 @@ class InvertedIndex;
 class PrimaryKey {
 private:
     NoAVL<char *> *root;
-    FILE *manPages;
+    FILE *manPages, *primaryKey;
     InvertedIndex *invertedIndex;
     
     int getFileSize(char *path);
