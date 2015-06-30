@@ -17,6 +17,7 @@ InvertedIndex::InvertedIndex() {
 
 void InvertedIndex::add(struct Manpage *page, int id) {
     char *ptr, word[50];
+    char path[] = "x.dat";
     int wordsCount = 0, i, j;
     char ch;
     char wordsFouded[3000][50];
@@ -50,7 +51,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
                     strcpy(wordsFouded[wordsCount], word);
                     wordsCount++;
                     if (wordsCount >= 3000) {
-                        break;
+                        throw "More than 3000 different words in file";
                     }
                 }
             }
@@ -64,11 +65,11 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     for (i = 0; i < wordsCount; i++) {
         notIndexed[i] = true;
     }
+    occ = (struct InvertedIndexData *)malloc(sizeof(struct InvertedIndexData));
     invertedIndex = fopen("index.dat","r+");
     if (invertedIndex == NULL) {
         throw "Error opening InvertedIndex file";
     }
-    occ = (struct InvertedIndexData *)malloc(sizeof(struct InvertedIndexData));
     // search occurrence in file, if has add link to file
     for (j = 0; ; j++) {
         fseek(invertedIndex, sizeof(struct InvertedIndexData) * j, SEEK_SET);
@@ -78,10 +79,18 @@ void InvertedIndex::add(struct Manpage *page, int id) {
         }
         for (i = 0; i < wordsCount; i++) {
             if (!strcmp(occ->word, wordsFouded[i])) {
+                if (occ->hasMore) {
+                    break;
+                }
                 notIndexed[i] = false;
                 printlndbg("II update: " << occ->word << " : " << occ->occurrencesCount);
-                occ->occurrences[occ->occurrencesCount] = id;
-                occ->occurrencesCount += 1;
+                if (occ->occurrencesCount >= MAXOCCURRENCES) {
+                    occ->hasMore = true;
+                    notIndexed[i] = true;
+                } else {
+                    occ->occurrences[occ->occurrencesCount] = id;
+                    occ->occurrencesCount += 1;
+                }
                 fseek(invertedIndex, sizeof(struct InvertedIndexData) * j, SEEK_SET);
                 fwrite(occ, sizeof(struct InvertedIndexData), 1, invertedIndex);
             }
@@ -98,6 +107,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
             strcpy(occ->word, wordsFouded[i]);
             occ->occurrences[0] = id;
             occ->occurrencesCount = 1;
+            occ->hasMore;
             printlndbg("II append: " << occ->word << " : " << occ->occurrencesCount);
             fwrite(occ, sizeof(struct InvertedIndexData), 1, invertedIndex);
         }
@@ -126,27 +136,38 @@ bool InvertedIndex::isProhibited(char *word) {
     return false;
 }
 
-InvertedIndexData *InvertedIndex::search(char *word) {
-    InvertedIndexData *occ;
+int *InvertedIndex::search(char *word) {
+    int *occ, occCount;
+    InvertedIndexData *index;
     int j = 0;
     invertedIndex = fopen("index.dat","r");
     if (invertedIndex == NULL) {
         throw "Error opening InvertedIndex file";
     }
-    occ = (struct InvertedIndexData *)malloc(sizeof(struct InvertedIndexData));
+    index = (struct InvertedIndexData *)malloc(sizeof(struct InvertedIndexData));
+    occ = (int *)malloc(1);
+    occCount = 0;
     // search occurrence in file, if has add link to file
     while (true) {
         fseek(invertedIndex, sizeof(struct InvertedIndexData) * j++, SEEK_SET);
-        fread(occ, sizeof(struct InvertedIndexData), 1, invertedIndex);
+        fread(index, sizeof(struct InvertedIndexData), 1, invertedIndex);
         if (feof(invertedIndex)) {
-            free(occ);
-            occ = NULL;
             break;
         }
-        if (!strcmp(occ->word, word)) {
-            break;
+        if (!strcmp(index->word, word)) {
+            int basePtr = occCount;
+            occCount += index->occurrencesCount;
+            occ = (int *)realloc(occ, sizeof(int) * (occCount + 1));
+            memcpy(&occ[basePtr + 1], index->occurrences, sizeof(int) * index->occurrencesCount);
+            if (index->hasMore) {
+                continue;
+            } else {
+                break;
+            }
         }
     }
+    occ[0] = occCount;
+    free(index);
     fclose(invertedIndex);
     return occ;
 }

@@ -1,10 +1,12 @@
 ﻿#ifndef INVERTEDINDEX_H
 #define INVERTEDINDEX_H
 
+#define MAXOCCURRENCES 75
 struct InvertedIndexData {
     char word[50];
-    int occurrences[5642];
+    int occurrences[MAXOCCURRENCES];
     int occurrencesCount;
+    char hasMore;
 };
 
 class InvertedIndex {
@@ -18,7 +20,7 @@ public:
     
     void add(struct Manpage *page, int id);
     
-    InvertedIndexData *search(char *word);
+    int *search(char *word);
 };
 
 #endif

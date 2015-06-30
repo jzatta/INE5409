@@ -37,16 +37,17 @@ int Manager::manage() {
             }
         }
         else if (!strncmp(input, "word:", 5)) {
-            InvertedIndexData *occ = invertedIndex->search(&input[5]);
+            int *occ = invertedIndex->search(&input[5]);
             int i;
-            if (occ != NULL) {
+            if (*occ > 0) {
 //                 printlndbg("manage: " << occ->occurrencesCount);
-                for (i = 0; i < occ->occurrencesCount; i++) {
-                    std::cout << primaryKey->readById(occ->occurrences[i])->name << std::endl;
+                for (i = 1; i <= *occ; i++) {
+                    std::cout << primaryKey->readById(occ[i])->name << std::endl;
                 }
             } else {
                 std::cout << "Manpages not founded" << std::endl;
             }
+            free(occ);
         }
         else if (!strncmp(input, "2word:", 6)) {
             
