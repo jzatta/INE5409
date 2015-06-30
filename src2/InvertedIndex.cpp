@@ -17,7 +17,6 @@ InvertedIndex::InvertedIndex() {
 
 void InvertedIndex::add(struct Manpage *page, int id) {
     char *ptr, word[50];
-    char path[] = "x.dat";
     int wordsCount = 0, i, j;
     char ch;
     char wordsFouded[3000][50];
@@ -59,6 +58,10 @@ void InvertedIndex::add(struct Manpage *page, int id) {
             continue;
         }
         i++;
+        if (i >= 50) {
+            i = 0; // more than 50 elements isn't consider as word
+            // throw "More than 50 elements in a word";
+        }
     }
     printlndbg("II:::: " << page->name << "@" << wordsCount);
     // initialize a buffer to write word wasnt in file
@@ -118,6 +121,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
 }
 
 bool InvertedIndex::isSeparator(char c) {
+    
     if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z')) {
         return false;
     }
