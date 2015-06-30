@@ -32,25 +32,24 @@ void InvertedIndex::add(struct Manpage *page, int id) {
             ch += 'a' - 'A';
         }
         word[i] = ch;
-        if (isSeparator(ch)) {
-            if (i < 3) {
+        if (isSeparator(ch)) { // verify if is a word separator
+            if (i < 3) { // words with less than 3 character doesn't count
                 i = 0;
                 continue;
             }
             word[i] = '\0';
-            if (!isProhibited(word)) {
-                // save word in a buffer, if not present yet
-                for (i = 0; i < wordsCount; i++) {
+            if (!isProhibited(word)) { // check if is a prohibit word, disabled
+                for (i = 0; i < wordsCount; i++) { // iterate with all words in the buffer
                     if (!strcmp(wordsFouded[i], word)) {
                         break;
                     }
                 }
-                if (i == wordsCount) {
+                if (i == wordsCount) { // if word wasn't, save to the end
                     printlndbg("II:word: " << page->name << " : " << word << "@" << wordsCount);
                     strcpy(wordsFouded[wordsCount], word);
                     wordsCount++;
                     if (wordsCount >= 3000) {
-                        throw "More than 3000 different words in file";
+                        throw "More than 3000 different words in manpage";
                     }
                 }
             }
@@ -64,7 +63,7 @@ void InvertedIndex::add(struct Manpage *page, int id) {
         }
     }
     printlndbg("II:::: " << page->name << "@" << wordsCount);
-    // initialize a buffer to write word wasnt in file
+    // initialize flag to append the word in file
     for (i = 0; i < wordsCount; i++) {
         notIndexed[i] = true;
     }
@@ -73,24 +72,23 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     if (invertedIndex == NULL) {
         throw "Error opening InvertedIndex file";
     }
-    // search occurrence in file, if has add link to file
-    for (j = 0; ; j++) {
+    for (j = 0; ; j++) { // iterate throught words saved in file
         fseek(invertedIndex, sizeof(struct InvertedIndexData) * j, SEEK_SET);
         fread(occ, sizeof(struct InvertedIndexData), 1, invertedIndex);
         if (feof(invertedIndex)) {
             break;
         }
-        for (i = 0; i < wordsCount; i++) {
-            if (!strcmp(occ->word, wordsFouded[i])) {
-                if (occ->hasMore) {
+        for (i = 0; i < wordsCount; i++) { // iterate throught words in the buffer
+            if (!strcmp(occ->word, wordsFouded[i])) { // Check if words in the buffer and file are the same
+                if (occ->hasMore) { // if has more occurrences go to the next, until the last
                     break;
                 }
-                notIndexed[i] = false;
+                notIndexed[i] = false; // reset to not append word in file
                 printlndbg("II update: " << occ->word << " : " << occ->occurrencesCount);
-                if (occ->occurrencesCount >= MAXOCCURRENCES) {
+                if (occ->occurrencesCount >= MAXOCCURRENCES) { // if is full set to append new instance of word
                     occ->hasMore = true;
                     notIndexed[i] = true;
-                } else {
+                } else { // if not add manpage index to occurrence
                     occ->occurrences[occ->occurrencesCount] = id;
                     occ->occurrencesCount += 1;
                 }
@@ -104,9 +102,10 @@ void InvertedIndex::add(struct Manpage *page, int id) {
     if (invertedIndex == NULL) {
         throw "Error opening InvertedIndex file";
     }
-    // if not, add first occurrence
-    for (i = 0; i < wordsCount; i++) {
+    // if not, append first occurrence
+    for (i = 0; i < wordsCount; i++) { // iterate to create an new instance of wort
         if (notIndexed[i]) {
+            // copy data and write in file
             strcpy(occ->word, wordsFouded[i]);
             occ->occurrences[0] = id;
             occ->occurrencesCount = 1;
